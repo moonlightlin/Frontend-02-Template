@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>测试狗咬人~写着玩玩~</title>
+  <script src="dogBitePerson.js"></script>
+  <script>
+    let dog = new Dog('doooog')
+    let person = new Person('Tom')
+    window.onload = () => {
+      const dogEl = document.getElementById('dog')
+      const personEl = document.getElementById('person')
+      
+      dogEl.innerHTML = dog.name + ': ' + dog.hp
+      personEl.innerHTML = person.name + ': ' + person.hp
+    }
+    
+    function handleBite() {
+      dog.attack('bite', person, 20)
+      document.getElementById('person').innerHTML = person.name + ': ' + person.hp + ' 额。被咬了。。'
+    }
+   
+  </script>
+</head>
+<body>
+  <div>
+    <span id="dog"></span>
+    <button onclick="handleBite()">咬人</button>
+  </div>
+  <div id="person"></div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UTF8编码</title>
+  <script src="encoding.js"></script>
+  <script>
+    function handleEncoding() {
+      const str = document.getElementById('string').value
+      console.log(encodingUTF8(str))
+    }
+  </script>
+</head>
+<body>
+  <input id="string" />
+  <button onclick="handleEncoding()">转码</button>
+</body>
+</html>

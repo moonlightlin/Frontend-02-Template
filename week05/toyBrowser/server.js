@@ -16,11 +16,14 @@ http.createServer((request, response) => {
                       '<meta name="viewport" content="width=device-width,initial-scale=1.0"/>' +
                       '<title>Test</title>' +
                       '<style>' +
-                        '#app { border: 1px solid red; padding: 5px; }' +
+                        '#app { border: 1px solid red; padding: 5px; font-size: 14px; }' +
+                        '#app .content { font-size: 20px; } ' +
                       '</style>' +
                     '</head>' +
                     '<body>' +
-                      '<div id="app" style="color: blue; font-size: 20px;">Hello Moon</div>' +
+                      '<div id="app" style="color: blue; font-size: 20px;">Hello Moon' +
+                        '<div class="content">Main</div>' +
+                      '</div>' +
                     '</body>' +
                   '</html>'
     response.end(html);

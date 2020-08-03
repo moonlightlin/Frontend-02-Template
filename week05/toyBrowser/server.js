@@ -16,13 +16,15 @@ http.createServer((request, response) => {
                       '<meta name="viewport" content="width=device-width,initial-scale=1.0"/>' +
                       '<title>Test</title>' +
                       '<style>' +
-                        '#app { border: 1px solid red; padding: 5px; font-size: 14px; }' +
-                        '#app .content { font-size: 20px; } ' +
+                        '#app { border: 1px solid red; padding: 5px; font-size: 14px; display: flex; width: 400px}' +
+                        '#app .content { font-size: 20px; width: 100px } ' +
                       '</style>' +
                     '</head>' +
                     '<body>' +
-                      '<div id="app" style="color: blue; font-size: 20px;">Hello Moon' +
+                      '<div id="app">Hello Moon' +
                         '<div class="content">Main</div>' +
+                        '<div class="content">Second</div>' +
+                        '<div class="content">Third</div>' +
                       '</div>' +
                     '</body>' +
                   '</html>'

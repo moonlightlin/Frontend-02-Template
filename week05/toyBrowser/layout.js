@@ -14,7 +14,8 @@ function layout(element) {
 
   // 进行主轴和交叉轴的处理
   // 将width、height为auto或空字符串的设为null，以便后续判断
-  ['width', 'height'].forEach(size => {
+  const arr = ['width', 'height']
+  arr.forEach(size => {
     if (style[size] === 'auto' || style[size] === '') {
       style[size] = null
     }
@@ -42,7 +43,7 @@ function layout(element) {
     mainSize = 'width'
     mainStart = 'left'
     mainEnd = 'right'
-    mainSize = +1
+    mainSign = +1
     mainBase = 0
 
     crossSize = 'height'
@@ -53,7 +54,7 @@ function layout(element) {
     mainSize = 'width'
     mainStart = 'right'
     mainEnd = 'left'
-    mainSize = -1
+    mainSign = -1
     mainBase = style.width
 
     crossSize = 'height'
@@ -65,7 +66,7 @@ function layout(element) {
     mainSize = 'height'
     mainStart = 'top'
     mainEnd = 'bottom'
-    mainSize = +1
+    mainSign = +1
     mainBase = 0
 
     crossSize = 'width'
@@ -76,7 +77,7 @@ function layout(element) {
     mainSize = 'height'
     mainStart = 'bottom'
     mainEnd = 'top'
-    mainSize = -1
+    mainSign = -1
     mainBase = style.height
 
     crossSize = 'width'
@@ -98,9 +99,61 @@ function layout(element) {
   if (!style[mainSize]) { // auto sizing
     elementStyle[mainSize] = 0
     for (var i = 0; i < items.length; i++) {
-      var item = items[i]
+      var itemStyle = getStyle(items[i])
+      if (itemStyle[mainSize]) {
+        elementStyle[mainSize] += itemStyle[mainSize]
+      }
+    }
+    isAutoMainSize = true
+  }
+
+  var flexLine = []
+  var flexLines = [flexLine]
+
+  var mainSpace = elementStyle[mainSize] // 剩余空间
+  var crossSpace = 0
+
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i]
+    var itemStyle = getStyle(item)
+
+    itemStyle[mainSize] = itemStyle[mainSize] || 0
+
+    if (itemStyle.flex) {
+      flexLine.push(item)
+    } else if (style.flexWrap === 'nowrap' && isAutoMainSize) {
+      // 元素不拆行或者是自动宽度
+      mainSpace -= itemStyle[mainSize]
+      if (itemStyle[crossSize] !== null && itemStyle[crossSize] !== void 0) {
+        crossSpace = Math.max(crossSpace, itemStyle[crossSpace])
+      }
+      flexLine.push(item)
+    } else {
+      // 把尺寸超过父元素的元素尺寸压到父元素尺寸
+      if (itemStyle[mainSize] > style[mainSize]) {
+        itemStyle[mainSize] = style[mainSize]
+      }
+
+      // 剩余空间不足
+      if (mainSpace < itemStyle[mainSize]) {
+        flexLine.mainSpace = mainSpace
+        flexLine.crossSpace = crossSpace
+        flexLine = [item] // 创建新行
+        flexLines.push(flexLine)
+        mainSpace = style[mainSize]
+        crossSpace = 0
+      } else {
+        flexLine.push(item)
+      }
+
+      if (itemStyle[crossSize] !== null && itemStyle[crossSize] !== void 0) {
+        crossSpace = Math.max(crossSpace, itemStyle[crossSpace])
+      }
+      mainSpace -= itemStyle[mainSize]
     }
   }
+
+  flexLine.mainSpace = mainSpace
 }
 
 function getStyle(element) {
